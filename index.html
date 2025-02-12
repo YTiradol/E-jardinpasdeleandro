@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E-Jardin</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .title {
+      font-size: 3em; /* Taille du texte */
+      color: #048a12; /* Couleur du texte */
+      text-align: center; /* Alignement centré */
+      margin: 20px 0; /* Marge autour du titre */
+      text-shadow: 2px 2px 5px rgb(0, 255, 102); /* Ombre portée */
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="title">E-Jardin</h1>
+    <button id="menu-toggle" class="menu-button">☰</button>
+    <aside class="sidebar">
+      <ul>
+        <li><a href="#" id="home-button">Accueil</a></li>
+        <li><a href="#" id="plants-button">Mes Plantes</a></li>
+        <li><a href="#" id="about-button">À propos</a></li>
+        <li><a href="#" id="rv-button">RV</a></li> <!-- Nouvelle entrée pour RV -->
+      </ul>
+    </aside>
+
+    <div id="home-content">
+      <section class="weekly-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Lundi</th>
+              <th>Mardi</th>
+              <th>Mercredi</th>
+              <th>Jeudi</th>
+              <th>Vendredi</th>
+              <th>Samedi</th>
+              <th>Dimanche</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      
+      <section class="info-sections">
+        <div class="info-box">
+          <h2>Conseils pour s'occuper de</h2>
+          <select id="plant-info-select">
+            <option value="">Sélectionnez une plante</option>
+          </select>
+          <p id="plant-care-tips" style="margin-top: 10px;">
+            Sélectionnez une plante pour voir les conseils.
+          </p>
+        </div>
+      </section>
+    </div>
+
+    <div id="plants-content" style="display: none;">
+      <h2>Mes Plantes</h2>
+      <button id="new-plant-button" class="action-button">Nouvelle Plante</button>
+      <div id="connected-plant-list" class="connected-plant-list" style="display: none;">
+        <h3>Plantes Connectées :</h3>
+        <div id="plant-list-container"></div>
+      </div>
+    </div>
+
+    <div id="flower-selection" style="display: none;">
+      <h2>Sélectionnez une Fleur</h2>
+      <div class="flower-buttons">
+        <div class="flower-container">
+          <img src="https://i.imgur.com/7VYfeZY.jpeg" alt="Rose" class="flower-image">
+          <button class="flower-button" data-name="Rose">Rose</button>
+        </div>
+        <div class="flower-container">
+          <img src="https://i.imgur.com/Qsk8dQP.jpeg" alt="Tulipe" class="flower-image">
+          <button class="flower-button" data-name="Tulipe">Tulipe</button>
+        </div>
+        <div class="flower-container">
+          <img src="https://i.imgur.com/UdHGLwL.jpeg" alt="Lilas" class="flower-image">
+          <button class="flower-button" data-name="Lilas">Lilas</button>
+        </div>
+        <div class="flower-container">
+          <img src="https://i.imgur.com/kIHTJE2.jpeg" alt="Lys" class="flower-image">
+          <button class="flower-button" data-name="Lys">Lys</button>
+        </div>
+        <div class="flower-container">
+          <img src="https://i.imgur.com/D0dvNE3.jpeg" alt="Cœur saignant" class="flower-image">
+          <button class="flower-button" data-name="Cœur saignant">Cœur saignant</button>
+        </div>
+        <div class="flower-container">
+          <img src="https://i.imgur.com/qFokUPt.jpeg" alt="Orchidée" class="flower-image">
+          <button class="flower-button" data-name="Orchidée">Orchidée</button>
+        </div>
+        <div class="flower-container">
+          <img src="https://i.imgur.com/MpBaR2C.jpeg" alt="Pivoine" class="flower-image">
+          <button class="flower-button" data-name="Pivoine">Pivoine</button>
+        </div>
+        <div class="flower-container">
+          <img src="https://i.imgur.com/WuhATGd.jpeg" alt="Iris" class="flower-image">
+          <button class="flower-button" data-name="Iris">Iris</button>
+        </div>
+        <div class="flower-container">
+          <img src="https://i.imgur.com/cAHlmWY.jpeg" alt="Dahlia" class="flower-image">
+          <button class="flower-button" data-name="Dahlia">Dahlia</button>
+        </div>
+        <div class="flower-container">
+          <img src="https://i.imgur.com/mypTiyU.jpeg" alt="Violette" class="flower-image">
+          <button class="flower-button" data-name="Violette">Violette</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section RV -->
+    <div id="rv-section" style="display: none;">
+      <h2>Réalité augmentée</h2>
+      <p>En production, disponible dans une future mise à jour</p>
+      <!-- Vous pouvez ajouter un formulaire ou d'autres éléments ici -->
+    </div>
+
+    <section id="about-section" style="display: none; text-align: center; padding: 50px;">
+      <h1>EQUIPE DE DEVELOPPMENT</h1>
+      <h2>Ianis, Financeur + Codeur // Léane Tiradol, Codeur/se // Blanche, Informatrice terrain // Tedja Lina, Designeuse // Hugo Claire, Informateur/trice</h2>
+    </section>
+
+    <!-- Fenêtre modale -->
+<div id="plant-modal" class="modal" style="display: none;">
+  <div class="modal-content">
+    <span class="close-button">&times;</span> <!-- Croix pour fermer la modal -->
+    <h2 id="modal-plant-name">Nom de la plante</h2>
+    <h3> Info de la plante disponible quand l'equipe de developpement aura le budget d'acheter un broche arduino pour se connecter en bleuthoot</h3>
+    <button id="delete-plant-button" class="delete-button">Supprimer la plante</button> <!-- Bouton de suppression -->
+  </div>
+</div>
+
+  </div>
+  <script src="script.js" defer></script>
+</body>
+</html>
