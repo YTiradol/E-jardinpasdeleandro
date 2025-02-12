@@ -19,7 +19,7 @@ body {
     /* Media Query pour les appareils mobiles */
     @media (max-width: 768px) {
       .container {
-        background-image: url('https://i.imgur.com/VoW8j1t.png'); /* Fond pour appareils mobiles */
+        background-image: url('https://i.imgur.com/cMFwiaD.png'); /* Fond pour appareils mobiles */
         background-attachment: scroll; /* Optionnel : annule le fond fixe */
       }
     }
