@@ -10,44 +10,58 @@
 </head>
 <body class="background-image">
 
-    <!-- Section Accueil -->
-    <section id="home-section" class="section active">
-        <h2>🌱 Calendrier de la semaine 🌱</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Lun</th>
-                    <th>Mar</th>
-                    <th>Mer</th>
-                    <th>Jeu</th>
-                    <th>Ven</th>
-                    <th>Sam</th>
-                    <th>Dim</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td data-jour="Lun">Cliquez ici</td>
-                    <td data-jour="Mar">Cliquez ici</td>
-                    <td data-jour="Mer">Cliquez ici</td>
-                    <td data-jour="Jeu">Cliquez ici</td>
-                    <td data-jour="Ven">Cliquez ici</td>
-                    <td data-jour="Sam">Cliquez ici</td>
-                    <td data-jour="Dim">Cliquez ici</td>
-                </tr>
-            </tbody>
-        </table>
-        <section class="conseil">
+  <!-- Section principale -->
+<section id="home-section" class="section active">
+    <div class="content-container">
+
+        <!-- Rectangle Calendrier -->
+        <div class="box calendrier">
+            <h2>🌱 Calendrier des 5 prochains jours 🌱</h2>
+            <table>
+                <thead>
+                    <tr id="calendar-header"></tr> <!-- En-tête dynamique -->
+                </thead>
+                <tbody>
+                    <tr id="calendar-body"></tr> <!-- Contenu dynamique -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Rectangle Conseils -->
+        <div class="box conseil">
             <h3>🌿 Conseil pour s'occuper de :</h3>
             <p id="conseil-texte">Cliquez sur un jour pour obtenir un conseil !</p>
-        </section>
+        </div>
+
+    </div>
+</section>
+  
+
+     <!-- Section Mes Plantes -->
+     <section id="plants-section" class="section">
+        <h2>🌿 Mes Plantes 🌿</h2>
+        <button id="add-plant-btn">➕ Ajouter une plante</button>
+        <ul id="plant-list"></ul>
     </section>
 
-    <!-- Section Mes Plantes -->
-    <section id="plants-section" class="section">
-        <h2>🌿 Mes Plantes 🌿</h2>
-        <p>Liste de vos plantes et conseils personnalisés.</p>
-    </section>
+    <!-- Fenêtre modale pour choisir une plante -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Choisissez une plante :</h3>
+            <div class="plant-gallery">
+                <div class="plant-item" data-name="Iris"><img src="https://i.imgur.com/82FzYIs.jpeg" alt="Iris"><p>Iris</p></div>
+                <div class="plant-item" data-name="Pivoine"><img src="https://i.imgur.com/dZNRUju.jpeg" alt="Pivoine"><p>Pivoine</p></div>
+                <div class="plant-item" data-name="Dahlia"><img src="https://i.imgur.com/148U2zi.jpeg" alt="Dahlia"><p>Dahlia</p></div>
+                <div class="plant-item" data-name="Violette"><img src="https://i.imgur.com/ZVmZJO7.jpeg" alt="Violette"><p>Violette</p></div>
+                <div class="plant-item" data-name="Plante 6"><img src="" alt="Plante 6"><p>Plante 6</p></div>
+                <div class="plant-item" data-name="Plante 7"><img src="" alt="Plante 7"><p>Plante 7</p></div>
+                <div class="plant-item" data-name="Plante 8"><img src="" alt="Plante 8"><p>Plante 8</p></div>
+                <div class="plant-item" data-name="Plante 9"><img src="" alt="Plante 9"><p>Plante 9</p></div>
+                <div class="plant-item" data-name="Plante 10"><img src="" alt="Plante 10"><p>Plante 10</p></div>
+            </div>
+        </div>
+    </div>
 
     <!-- Section À Propos -->
     <section id="about-section" class="section">
@@ -61,13 +75,20 @@
         <p>Découvrez votre jardin en réalité augmentée !</p>
     </section>
 
-    <!-- Barre de navigation -->
     <nav class="navbar">
-        <button class="nav-btn" data-target="home-section"><i class="fas fa-home"></i><span>Accueil</span></button>
-        <button class="nav-btn" data-target="plants-section"><i class="fas fa-seedling"></i><span>Mes Plantes</span></button>
-        <button class="nav-btn" data-target="about-section"><i class="fas fa-info-circle"></i><span>À Propos</span></button>
-        <button class="nav-btn" data-target="ar-section"><i class="fas fa-vr-cardboard"></i><span>Réalité Augmentée</span></button>
+        <button class="nav-btn" data-target="home-section">
+            <div class="icon home-icon"></div>
+        </button>
+        <button class="nav-btn" data-target="plants-section">
+            <div class="icon plant-icon"></div>
+        </button>
+        <button class="nav-btn" data-target="about-section">
+            <div class="icon info-icon"></div>
+        </button>
+        <button class="nav-btn" data-target="ar-section">
+            <div class="icon ar-icon"></div>
+        </button>
     </nav>
-
+    
 </body>
 </html>
