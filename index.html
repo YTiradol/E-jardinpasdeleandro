@@ -29,7 +29,7 @@
 
         <!-- Rectangle Conseils -->
         <div class="box conseil">
-            <h3>🌿 Conseil pour s'occuper de :</h3>
+            <h3>🌿 Conseil du jour :</h3>
             <p id="conseil-texte">Cliquez sur un jour pour obtenir un conseil !</p>
         </div>
 
@@ -42,6 +42,16 @@
         <h2>🌿 Mes Plantes 🌿</h2>
         <button id="add-plant-btn">➕ Ajouter une plante</button>
         <ul id="plant-list"></ul>
+        <!-- Fenêtre modale pour les infos des plantes -->
+<div id="plant-info-modal" class="modal">
+    <div class="modal-content">
+        <span class="close" id="close-info-modal">&times;</span>
+        <h2 id="plant-info-name"></h2>
+        <img id="plant-info-image" src="" alt="" style="width:100px; border-radius: 5px;">
+        <p id="plant-info-description"></p>
+    </div>
+</div>
+
     </section>
 
     <!-- Fenêtre modale pour choisir une plante -->
@@ -66,13 +76,24 @@
     <!-- Section À Propos -->
     <section id="about-section" class="section">
         <h2>ℹ️ À Propos ℹ️</h2>
-        <p>Informations sur l'application Jardin Connecté.</p>
+        <h3>EQUIPE DE DEVELOPPMENT </h3>
+        <h4> 
+            <br>
+            Ianis   > Financeur et Developpeur système embarqué <br>
+            Léane   > ingénieur en systèmes embarqués <br>
+            Tiradol > Dévellopeur web <br>
+            Blanche > business analyst <br>
+            Tedja   > Designeuse 3D <br>
+            Lina    > Designeuse 3D <br>
+            Hugo    > Consultant en innovation <br>
+            Claire  > Informatrice </h4>
+      </section>
     </section>
 
     <!-- Section Réalité Augmentée -->
     <section id="ar-section" class="section">
         <h2>🕶️ Réalité Augmentée 🕶️</h2>
-        <p>Découvrez votre jardin en réalité augmentée !</p>
+        <p>En production, disponible dans une future mise à jour</p>
     </section>
 
     <nav class="navbar">
