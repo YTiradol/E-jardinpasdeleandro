@@ -3,7 +3,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Arial', sans-serif;
+    font-family: 'Comic Sans MS', sans-serif;
 }
 
 /* Image de fond */
@@ -29,43 +29,6 @@
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
     margin-top: 20px;
 }
-
-/* Empêche le tableau de dépasser son cadre */
-.calendrier {
-    width: 100%;
-    max-width: 100%;
-    padding: 10px;
-    box-sizing: border-box;
-}
-
-/* Ajustement du tableau pour qu'il s'adapte */
-.calendrier table {
-    width: 100%;
-    table-layout: fixed; /* Force une répartition égale des colonnes */
-    border-collapse: collapse;
-}
-
-/* Ajustement des cellules pour ne pas qu'elles soient trop larges */
-.calendrier th, 
-.calendrier td {
-    padding: 8px;
-    font-size: 12px; /* Réduction du texte pour mobile */
-    word-wrap: break-word; /* Permet au texte de s'adapter */
-}
-
-/* Réduction de la taille du texte sur petits écrans */
-@media screen and (max-width: 600px) {
-    .calendrier h2 {
-        font-size: 16px; /* Réduit le titre pour gagner de la place */
-    }
-    
-    .calendrier th, 
-    .calendrier td {
-        font-size: 10px; /* Encore plus petit sur très petits écrans */
-        padding: 6px;
-    }
-}
-
 
 /* Section visible */
 .section.active {
@@ -410,3 +373,43 @@ td:hover {
     max-width: 600px;
     margin: 30px auto; /* Augmente la marge autour */
 }
+
+/* Empêche le tableau de dépasser son cadre */
+.calendrier {
+    width: 100%;
+    max-width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+/* Ajustement du tableau pour qu'il s'adapte */
+.calendrier table {
+    width: 100%;
+    table-layout: fixed; /* Force une répartition égale des colonnes */
+    border-collapse: collapse;
+}
+
+/* Ajustement des cellules pour ne pas qu'elles soient trop larges */
+.calendrier th, 
+.calendrier td {
+    padding: 8px;
+    font-size: 12px; /* Réduction du texte pour mobile */
+    word-wrap: break-word; /* Permet au texte de s'adapter */
+}
+
+/* Réduction de la taille du texte sur petits écrans */
+@media screen and (max-width: 600px) {
+    .calendrier h2 {
+        font-size: 16px; /* Réduit le titre pour gagner de la place */
+    }
+    
+    .calendrier th, 
+    .calendrier td {
+        font-size: 10px; /* Encore plus petit sur très petits écrans */
+        padding: 6px;
+    }
+}
+
+h4 {
+    text-align: left;
+  }
