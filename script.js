@@ -1,14 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
     const joursSemaine = ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"];
     
-    // Récupérer la date d'aujourd'hui
     let aujourdHui = new Date();
-    
-    // Sélection des éléments HTML
     const calendarHeader = document.getElementById("calendar-header");
     const calendarBody = document.getElementById("calendar-body");
 
-    // Générer les 5 prochains jours
     for (let i = 0; i < 5; i++) {
         let jourSuivant = new Date();
         jourSuivant.setDate(aujourdHui.getDate() + i);
@@ -16,19 +12,17 @@ document.addEventListener("DOMContentLoaded", () => {
         let jourTexte = joursSemaine[jourSuivant.getDay()];
         let dateTexte = jourSuivant.getDate() + "/" + (jourSuivant.getMonth() + 1);
 
-        // Créer les colonnes du tableau
         let th = document.createElement("th");
         th.textContent = jourTexte + " (" + dateTexte + ")";
         calendarHeader.appendChild(th);
 
         let td = document.createElement("td");
-        td.textContent = "Cliquez ici";
+        td.textContent = "?";
         td.setAttribute("data-jour", jourTexte);
         td.addEventListener("click", () => afficherConseil(jourTexte));
         calendarBody.appendChild(td);
     }
 
-    // Fonction pour afficher un conseil en fonction du jour sélectionné
     function afficherConseil(jour) {
         const conseils = {
             "Lun": "Arrosez vos plantes le matin. 🌞",
@@ -41,28 +35,25 @@ document.addEventListener("DOMContentLoaded", () => {
         };
         
         document.getElementById("conseil-texte").textContent = conseils[jour] || "Aucun conseil disponible.";
-    }// Gestion de la navigation
+    }
+
     document.querySelectorAll(".nav-btn").forEach(button => {
         button.addEventListener("click", () => {
             const targetSection = button.getAttribute("data-target");
-
-            // Masquer toutes les sections
             document.querySelectorAll(".section").forEach(section => {
                 section.classList.remove("active");
             });
-
-            // Afficher la section correspondante
             document.getElementById(targetSection).classList.add("active");
         });
     });
-});
 
-document.addEventListener("DOMContentLoaded", () => {
-    // Gestion de la fenêtre modale
     const modal = document.getElementById("modal");
     const addPlantBtn = document.getElementById("add-plant-btn");
     const closeModal = document.querySelector(".close");
     const plantList = document.getElementById("plant-list");
+    const plantInfoModal = document.getElementById("plant-info-modal");
+    const plantInfoContent = document.getElementById("plant-info-content");
+    const closePlantInfo = document.getElementById("close-plant-info");
 
     addPlantBtn.addEventListener("click", () => {
         modal.style.display = "flex";
@@ -76,16 +67,20 @@ document.addEventListener("DOMContentLoaded", () => {
         if (event.target === modal) {
             modal.style.display = "none";
         }
+        if (event.target === plantInfoModal) {
+            plantInfoModal.style.display = "none";
+        }
     });
 
-    // Gestion de l'ajout des plantes à la liste
     document.querySelectorAll(".plant-item").forEach(item => {
         item.addEventListener("click", () => {
             const plantName = item.getAttribute("data-name");
             const plantImgSrc = item.querySelector("img").src;
 
-            // Créer un élément pour la liste
             const listItem = document.createElement("li");
+            listItem.setAttribute("data-name", plantName);
+            listItem.setAttribute("data-description", ""); // Description vide pour que tu la remplisses plus tard
+            
             const plantImg = document.createElement("img");
             plantImg.src = plantImgSrc;
             plantImg.width = 40;
@@ -93,12 +88,58 @@ document.addEventListener("DOMContentLoaded", () => {
             
             listItem.appendChild(plantImg);
             listItem.appendChild(document.createTextNode(plantName));
+            listItem.addEventListener("click", () => afficherInfoPlante(listItem));
 
-            // Ajouter à la liste
             plantList.appendChild(listItem);
-
-            // Fermer la fenêtre modale
             modal.style.display = "none";
         });
+    });
+
+    function afficherInfoPlante(plantItem) {
+        const plantName = plantItem.getAttribute("data-name");
+        const plantDescription = plantItem.getAttribute("data-description");
+        
+        plantInfoContent.innerHTML = `<h2>${plantName}</h2><p>${plantDescription}</p>`;
+        plantInfoModal.style.display = "flex";
+    }
+
+    closePlantInfo.addEventListener("click", () => {
+        plantInfoModal.style.display = "none";
+    });
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+    const plantInfoModal = document.getElementById("plant-info-modal");
+    const plantInfoName = document.getElementById("plant-info-name");
+    const plantInfoImage = document.getElementById("plant-info-image");
+    const plantInfoDescription = document.getElementById("plant-info-description");
+    const closeInfoModal = document.getElementById("close-info-modal");
+
+    // Ajout d'un event listener pour chaque plante ajoutée
+    document.getElementById("plant-list").addEventListener("click", (event) => {
+        if (event.target.tagName === "IMG") {
+            const listItem = event.target.parentElement;
+            const plantName = listItem.textContent.trim();
+            const plantImgSrc = event.target.src;
+
+            // Affichage des infos dans la modale
+            plantInfoName.textContent = plantName;
+            plantInfoImage.src = plantImgSrc;
+            plantInfoDescription.textContent = "Info de la plante disponible quand l'equipe de developpement aura le budget d'acheter un broche arduino pour se connecter en bleuthoot"; // Laisse vide pour que tu puisses la remplir
+
+            // Afficher la fenêtre modale
+            plantInfoModal.style.display = "flex";
+        }
+    });
+
+    // Fermer la modale des infos
+    closeInfoModal.addEventListener("click", () => {
+        plantInfoModal.style.display = "none";
+    });
+
+    window.addEventListener("click", (event) => {
+        if (event.target === plantInfoModal) {
+            plantInfoModal.style.display = "none";
+        }
     });
 });
