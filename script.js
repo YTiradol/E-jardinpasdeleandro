@@ -143,3 +143,210 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
+
+let video, canvas, ctx, model;
+let currentFacingMode = "environment"; 
+
+document.getElementById("start-button").addEventListener("click", startCamera);
+document.getElementById("analyze-button").addEventListener("click", startAnalysis);
+
+async function startCamera() {
+    document.getElementById("start-button").style.display = "none";
+    document.getElementById("analyze-button").style.display = "block";
+
+    video = document.getElementById("video");
+    canvas = document.getElementById("ar-overlay");
+    ctx = canvas.getContext("2d");
+
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+            video: { width: 640, height: 480, facingMode: currentFacingMode }
+        });
+        video.srcObject = stream;
+        model = await mobilenet.load();
+    } catch (err) {
+        console.error("Erreur d'accès à la caméra:", err);
+        alert("Impossible d'accéder à la caméra.");
+    }
+}
+
+function switchCamera(facingMode) {
+    currentFacingMode = facingMode;
+    startCamera();
+}
+
+async function startAnalysis() {
+    if (!video) {
+        alert("Caméra non active.");
+        return;
+    }
+
+    captureAndSendImage();
+}
+
+function captureAndSendImage() {
+    const tempCanvas = document.createElement("canvas");
+    tempCanvas.width = video.videoWidth;
+    tempCanvas.height = video.videoHeight;
+    const tempCtx = tempCanvas.getContext("2d");
+    tempCtx.drawImage(video, 0, 0, tempCanvas.width, tempCanvas.height);
+
+    tempCanvas.toBlob(blob => {
+        sendToPlantID(blob);
+    }, "image/jpeg");
+}
+
+async function sendToPlantID(imageBlob) {
+    const formData = new FormData();
+    formData.append("images", imageBlob);
+
+    try {
+        const response = await fetch("https://api.plant.id/v3/identification", {
+            method: "POST",
+            headers: {
+                "Api-Key": "pIzqRbeto5XWmwuFseS9DHAfp9G8h2nTQE2UpGQCdDKoi53aAj",
+            },
+            body: formData,
+        });
+
+        if (!response.ok) {
+            throw new Error(`Erreur API: ${response.status} - ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        processPlantData(data);
+    } catch (error) {
+        console.error("Erreur API:", error);
+        alert("Erreur avec Plant.id.");
+    }
+}
+
+function processPlantData(data) {
+    if (data.status === "COMPLETED") {
+        const suggestion = data.result.classification.suggestions[0];
+        let detectedPlantScientific = suggestion.name;
+        let detectedPlantCommon = plantDatabase[detectedPlantScientific] || "Nom inconnu";
+        let confidenceScore = (suggestion.probability * 100).toFixed(2) + "%";
+
+        document.getElementById("plant-name").textContent = `${detectedPlantScientific} (${detectedPlantCommon}) - ${confidenceScore}`;
+        document.getElementById("info-box").style.display = "block";
+    }
+}
+
+// Base de données des plantes (extrait)
+const plantDatabase = {
+    "Aloe vera": "Aloe vera",
+        "Mentha × piperita": "Menthe poivrée",
+        "Rosmarinus officinalis": "Romarin",
+        "Thymus vulgaris": "Thym",
+        "Lavandula angustifolia": "Lavande vraie",
+        "Matricaria chamomilla": "Camomille allemande",
+        "Salvia officinalis": "Sauge officinale",
+        "Echinacea purpurea": "Échinacée pourpre",
+        "Zingiber officinale": "Gingembre",
+        "Curcuma longa": "Curcuma",
+        "Melissa officinalis": "Mélisse",
+        "Artemisia absinthium": "Absinthe",
+        "Foeniculum vulgare": "Fenouil",
+        "Cinnamomum verum": "Cannelle",
+        "Piper nigrum": "Poivre noir",
+        "Valeriana officinalis": "Valériane",
+        "Passiflora incarnata": "Passiflore",
+        "Hypericum perforatum": "Millepertuis",
+        "Achillea millefolium": "Achillée millefeuille",
+        "Urtica dioica": "Ortie",
+
+        // 🌺 Plantes Ornementales
+        "Rosa spp.": "Rose",
+        "Tulipa spp.": "Tulipe",
+        "Narcissus spp.": "Narcisse",
+        "Hibiscus rosa-sinensis": "Hibiscus",
+        "Orchidaceae spp.": "Orchidée",
+        "Petunia hybrida": "Pétunia",
+        "Begonia semperflorens": "Bégonia",
+        "Dahlia pinnata": "Dahlia",
+        "Lilium spp.": "Lys",
+        "Chrysanthemum spp.": "Chrysanthème",
+
+        // 🌳 Arbres et Arbustes
+        "Quercus robur": "Chêne pédonculé",
+        "Fagus sylvatica": "Hêtre commun",
+        "Acer saccharum": "Érable à sucre",
+        "Betula pendula": "Bouleau verruqueux",
+        "Olea europaea": "Olivier",
+        "Prunus avium": "Merisier",
+        "Magnolia grandiflora": "Magnolia",
+        "Pinus sylvestris": "Pin sylvestre",
+        "Ginkgo biloba": "Ginkgo",
+        "Cedrus atlantica": "Cèdre de l’Atlas",
+
+        // 🍊 Plantes Fruitières
+        "Malus domestica": "Pommier",
+        "Pyrus communis": "Poirier",
+        "Citrus × sinensis": "Oranger doux",
+        "Prunus persica": "Pêcher",
+        "Vitis vinifera": "Vigne",
+        "Fragaria × ananassa": "Fraisier",
+        "Rubus idaeus": "Framboisier",
+        "Vaccinium corymbosum": "Myrtillier",
+        "Musa × paradisiaca": "Bananier",
+        "Coffea arabica": "Caféier",
+
+        // 🌾 Céréales et Légumineuses
+        "Zea mays": "Maïs",
+        "Triticum aestivum": "Blé tendre",
+        "Oryza sativa": "Riz",
+        "Hordeum vulgare": "Orge",
+        "Secale cereale": "Seigle",
+        "Avena sativa": "Avoine",
+        "Glycine max": "Soja",
+        "Cicer arietinum": "Pois chiche",
+        "Lens culinaris": "Lentille",
+        "Phaseolus vulgaris": "Haricot commun",
+
+        // 🌿 Plantes Sauvages et Utilitaires
+        "Taraxacum officinale": "Pissenlit",
+        "Plantago major": "Grand plantain",
+        "Rumex acetosa": "Oseille",
+        "Chenopodium album": "Chénopode blanc",
+        "Sambucus nigra": "Sureau noir",
+        "Trifolium pratense": "Trèfle rouge",
+        "Arctium lappa": "Bardane",
+        "Equisetum arvense": "Prêle des champs",
+        "Viola tricolor": "Pensée sauvage",
+        "Bellis perennis": "Pâquerette",
+
+        // 🌱 Plantes Aquatiques
+        "Nymphaea alba": "Nénuphar blanc",
+        "Lemna minor": "Lentille d’eau",
+        "Myriophyllum spicatum": "Myriophylle en épi",
+        "Ceratophyllum demersum": "Cornifle immergé",
+        "Sagittaria sagittifolia": "Flèche d’eau",
+        "Typha latifolia": "Massette à larges feuilles",
+        "Nelumbo nucifera": "Lotus sacré",
+        "Hydrilla verticillata": "Hydrilla",
+        "Eichhornia crassipes": "Jacinthe d’eau",
+        "Utricularia vulgaris": "Utriculaire commune",
+
+        // 🌿 Plantes Tropicales et Exotiques
+        "Theobroma cacao": "Cacaoyer",
+        "Ananas comosus": "Ananas",
+        "Carica papaya": "Papayer",
+        "Persea americana": "Avocatier",
+        "Cocos nucifera": "Cocotier",
+        "Mangifera indica": "Manguier",
+        "Psidium guajava": "Goyavier",
+        "Litchi chinensis": "Litchi",
+        "Passiflora edulis": "Fruit de la passion",
+        "Dioscorea alata": "Igname",
+        "Euterpe oleracea": "Açaï",
+        "Syzygium aromaticum": "Giroflier",
+        "Annona muricata": "Corossolier",
+        "Colocasia esculenta": "Taro",
+        "Elettaria cardamomum": "Cardamome",
+        "Bixa orellana": "Roucou",
+        "Myrciaria dubia": "Camu-camu",
+        "Blighia sapida": "Aki",
+        "Artocarpus heterophyllus": "Jacquier",
+        "Nephelium lappaceum": "Ramboutan"
+    };
