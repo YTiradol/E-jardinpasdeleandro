@@ -52,6 +52,8 @@
         <h2 id="plant-info-name"></h2>
         <img id="plant-info-image" src="" alt="" style="width:100px; border-radius: 5px;">
         <p id="plant-info-description"></p>
+        <button id="change-plant-image-btn">🖼️ Changer l'image</button>
+<input type="file" id="plant-image-input" accept="image/*" style="display: none;">
     </div>
 </div>
 
@@ -83,13 +85,13 @@
         <h4> 
             <br>
             Ianis   > Financeur et Developpeur système embarqué <br>
-            Léane   > ingénieur en systèmes embarqués <br>
+            Léane   > ingénieur en systèmes embarqués et Touche à tout<br>
             Tiradol > Dévellopeur web <br>
             Blanche > business analyst <br>
             Tedja   > Designeuse 3D <br>
             Lina    > Designeuse 3D <br>
             Hugo    > Consultant en innovation <br>
-            Claire  > Informatrice </h4>
+            Claire  > Secretaire </h4>
       </section>
     </section>
 
@@ -114,6 +116,10 @@
             <button class="btn-camera" onclick="switchCamera('environment')">Caméra arrière</button>
             <button class="btn-camera" onclick="switchCamera('user')">Caméra avant</button>
         </div>
+        <div class="btn-container">
+        <button id="add-plant-from-ar" class="btn-add-plant" style="display: none;">➕ Ajouter à Mon Jardin</button>
+    </div>
+
     </section>
 
     <nav class="navbar">
