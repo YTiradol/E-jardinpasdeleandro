@@ -350,3 +350,94 @@ const plantDatabase = {
         "Artocarpus heterophyllus": "Jacquier",
         "Nephelium lappaceum": "Ramboutan"
     };
+
+    function processPlantData(data) {
+        if (!data.result || !data.result.classification || !data.result.classification.suggestions.length) {
+            alert("Aucune plante identifiée.");
+            return;
+        }
+    
+        const suggestion = data.result.classification.suggestions[0];
+        let detectedPlantScientific = suggestion.name;
+        let detectedPlantCommon = plantDatabase[detectedPlantScientific] || "Nom inconnu";
+        let confidenceScore = (suggestion.probability * 100).toFixed(2) + "%";
+    
+        document.getElementById("plant-name").textContent = `${detectedPlantScientific} (${detectedPlantCommon}) - ${confidenceScore}`;
+        document.getElementById("info-box").style.display = "block";
+    
+        // Stocker les infos de la plante analysée
+        window.lastDetectedPlant = {
+            name: detectedPlantCommon,
+            scientific: detectedPlantScientific,
+            imageSrc: document.getElementById("ar-overlay").toDataURL("image/png")
+        };
+    
+        // Afficher le bouton d'ajout
+        document.getElementById("add-plant-from-ar").style.display = "block";
+    }
+
+    document.getElementById("add-plant-from-ar").addEventListener("click", () => {
+        if (!window.lastDetectedPlant) {
+            alert("Aucune plante à ajouter !");
+            return;
+        }
+    
+        const { name, scientific, imageSrc } = window.lastDetectedPlant;
+        const plantList = document.getElementById("plant-list");
+    
+        // Créer l'élément de liste
+        const listItem = document.createElement("li");
+        listItem.setAttribute("data-name", scientific);
+        listItem.setAttribute("data-description", "Plante identifiée par analyse.");
+    
+        const plantImg = document.createElement("img");
+        plantImg.src = imageSrc;
+        plantImg.width = 40;
+        plantImg.style.borderRadius = "5px";
+    
+        listItem.appendChild(plantImg);
+        listItem.appendChild(document.createTextNode(` ${name} (${scientific})`));
+    
+        // Ajouter l'événement pour afficher les infos
+        listItem.addEventListener("click", () => afficherInfoPlante(listItem));
+    
+        plantList.appendChild(listItem);
+    
+        // Cacher le bouton après l'ajout
+        document.getElementById("add-plant-from-ar").style.display = "none";
+    
+        // Réinitialiser les données stockées
+        window.lastDetectedPlant = null;
+    });
+    
+    document.getElementById("change-plant-image-btn").addEventListener("click", () => {
+        document.getElementById("plant-image-input").click();
+    });
+    
+    // Quand l'utilisateur sélectionne une nouvelle image
+    document.getElementById("plant-image-input").addEventListener("change", (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            
+            reader.onload = (e) => {
+                const newImageSrc = e.target.result;
+    
+                // Mettre à jour l'image dans la modale
+                document.getElementById("plant-info-image").src = newImageSrc;
+    
+                // Trouver la plante dans la liste et mettre à jour son image
+                const plantName = document.getElementById("plant-info-name").textContent;
+                document.querySelectorAll("#plant-list li").forEach(li => {
+                    if (li.textContent.includes(plantName)) {
+                        li.querySelector("img").src = newImageSrc;
+                    }
+                });
+    
+                // Réinitialiser l'input file pour pouvoir re-sélectionner une autre image après
+                document.getElementById("plant-image-input").value = "";
+            };
+    
+            reader.readAsDataURL(file);
+        }
+    });
