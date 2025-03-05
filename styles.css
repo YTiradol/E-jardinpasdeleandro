@@ -499,3 +499,37 @@ button {
 button:hover {
     opacity: 0.8;
 }
+
+.navbar {
+    display: flex;
+    justify-content: space-around;
+    padding: 15px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+.nav-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+}
+
+.nav-btn:hover {
+    transform: scale(1.2);
+}
+
+/* 🔥 Nouvelle règle pour AGRANDIR VRAIMENT les emojis 🔥 */
+.nav-btn span {
+    font-size: 50px; /* Augmenter la taille des emojis */
+    display: block; /* S'assure que l'emoji est bien séparé */
+    line-height: 1; /* Évite que l'emoji soit trop petit */
+}
+
+.emoji {
+    font-size: 40px; /* Taille des emojis */
+    display: block;
+    line-height: 1;
+    filter: grayscale(100%); /* Rend l'emoji noir et blanc */
+}
