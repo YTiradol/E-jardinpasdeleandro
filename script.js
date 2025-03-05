@@ -204,7 +204,7 @@ async function sendToPlantID(imageBlob) {
         const response = await fetch("https://api.plant.id/v3/identification", {
             method: "POST",
             headers: {
-                "Api-Key": "pIzqRbeto5XWmwuFseS9DHAfp9G8h2nTQE2UpGQCdDKoi53aAj",
+                "Api-Key": "7bgm7IMFOa3sQ0oyQhcELv3UcspSvyLAhe5l2jb4yLikzisn7O",
             },
             body: formData,
         });
